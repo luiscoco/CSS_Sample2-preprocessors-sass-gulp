@@ -1,0 +1,6 @@
+/*
+This file is an entry point for all 'global' styles that will be outputted to CSS if imported here
+ */
+@use 'vendors';
+@use 'base';
+@use '../components/my_component/component.scss';

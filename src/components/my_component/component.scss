@@ -1,0 +1,15 @@
+@use '../../styles/shared' as s;
+
+@use '../../styles/base';
+
+.component {
+	@include s.size;
+
+	color: s.$color-primary-1;
+
+	@extend %f-body--normal;
+}
+
+.test {
+	@extend .baseClass;
+}

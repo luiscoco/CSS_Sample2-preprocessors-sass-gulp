@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>SASS</title>
+		<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css"> -->
+		<!-- Local server is set to serve files from dist directory so we set paths relative to it-->
+		<link rel="stylesheet" href="styles/styles.min.css" />
+		<script type="module" src="js/script.min.js"></script>
+	</head>
+
+	<body>
+		<h1>SCSS</h1>
+
+		<section class="GeneralSyntax">
+			<h2>General syntax</h2>
+			<p>
+				SCSS aims to be a superset of CSS, so the syntax is the same with some
+				additions like variables, modules, mixins etr
+			</p>
+			<p>Curly brackets, colons and semicolons are used like in CSS</p>
+		</section>
+
+		<section class="Variables">
+			<h2>Variables</h2>
+
+			<section class="SassVariables">
+				<h3>SASS variables</h3>
+				<p>
+					Sass variables exist only in compile time. Sass variables are
+					compliled to 'fixed' values so they do not exist as variables in
+					runtime
+				</p>
+
+				<p>
+					Hyphens and underscore in variable names are treated as the same
+					symbol, so $font-size and $font_size will be the same
+				</p>
+
+				<div class="circle"></div>
+			</section>
+
+			<section class="CssVariables">
+				<h3>CSS variables</h3>
+				<p>
+					CSS variables exist in runtime. So we can use them for example inside
+					media queries so that viewport width will affect their value
+				</p>
+				<div class="circle"></div>
+			</section>
+		</section>
+
+		<section class="Properties">
+			<h2>Properties syntax</h2>
+		</section>
+
+		<section class="BEM">
+			<h2>Parent selector and BEM</h2>
+			<div class="popup">
+				<h3 class="popup__title">Heading</h3>
+				<div class="popup__description">
+					<p class="popup__text">Text</p>
+					<img
+						class="popup__img"
+						src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Blue_question_mark_icon.svg/1200px-Blue_question_mark_icon.svg.png" />
+				</div>
+				<button class="popup__button">Button</button>
+			</div>
+			<div class="messages">
+				<div class="message message--success">
+					<h3 class="message__title">Message heading</h3>
+					<div class="message__text">Message text</div>
+				</div>
+				<div class="message message--error">
+					<h3 class="message__title">Message heading</h3>
+					<div class="message__text">Message text</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="Arrays">
+			<h2>Arrays, iteration</h2>
+			<div class="icon icon--40px"></div>
+			<div class="icon icon--50px"></div>
+			<div class="icon icon--80px"></div>
+		</section>
+
+		<section class="Mixins">
+			<h2>Mixins</h2>
+
+			<ul>
+				<li>First</li>
+				<li>Second</li>
+				<li>Third</li>
+			</ul>
+
+			<ol>
+				<li>First</li>
+				<li>Second</li>
+				<li>Third</li>
+			</ol>
+		</section>
+
+		<section class="Extends">
+			<h2>Extends</h2>
+
+			<div class="msg--success">Success message</div>
+
+			<div class="msg--error">Error message</div>
+		</section>
+
+		<section class="Media">
+			<div class="responsive">Responsive block</div>
+
+			<div class="adaptive">
+				Adaptive block (controlled by media queries based on global breakpoints)
+			</div>
+
+			<div class="adaptive2">
+				Another adaptive block (controlled by media queries based on global
+				breakpoints)
+			</div>
+		</section>
+	</body>
+</html>

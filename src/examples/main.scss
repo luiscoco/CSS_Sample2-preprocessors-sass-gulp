@@ -1,0 +1,324 @@
+@use 'sass:meta'; // sass comes with some built-in modules that can be imported in this way
+@use 'sass:math'; // provides some built-in variables like math.$pi
+
+// # old 'import' syntax
+@import 'variables'; // variables are imported fist, so they are available in all files that go after them
+@import 'helper-styles';
+@import 'mixins';
+@import 'media-queries';
+// traditionally 'partial' (imported) files are prefixed with _
+// you can omit leading _ in filename when importing
+
+// # general syntax
+// CSS-like
+.GeneralSyntax h2 {
+	color: blue;
+}
+
+// # variables
+
+// global SASS variables will be available inside all selectors
+// usually it makes sense to declare all global variables in separate file like _variables.scss
+$color: green;
+$font--primary: Arial, sans-serif;
+$font-size: 16px;
+
+// variable refactoring works (press F2 to rename variable)
+.SassVariables {
+	$localColor: blue; // local variable
+	$color: lightblue; // shadowing: shadows the outer $color var
+
+	// = global override
+	// something like globalThis.name = 'value' in JS
+	// sometimes useful in mixins
+	$font--primary: 'Helvetica' !global; // overrides global variable (global var needs to be already declared)
+
+	font-family: $font--primary;
+	font-size: $font-size; // uses global variable
+
+	border: thin solid $localColor;
+	background: $color;
+}
+
+.SassVariables .circle {
+	// local variable $localColor will not be visible inside the .circle
+	// background: $localColor;
+
+	// global variable $color will be available here
+	// background: $color;
+	// local variable, will be visible inside the .circle
+	$size: 100px;
+	width: $size;
+	height: $size * 1.2;
+
+	// we can do the math with variables
+	border-radius: calc($size / 2);
+	// ^ in latest versions of Sass for division, we have use calc() or math.div()
+}
+
+// ~ there are also CSS variables!
+/*
+- need to be declared inside of selector
+- if want them to be global, we can declare them in :root
+- they exist in runtime - we can use e.g. media queries to change the value of CSS variable
+*/
+
+:root {
+	--color: green;
+}
+
+.CssVariables {
+	// var from :root is available in all descendant elements
+	color: var(--color);
+	// css var with fallback (will be used if --my-var is undefined)
+	background-color: var(--my-var, lightgrey);
+	--color2: blue;
+}
+
+.CssVariables .circle {
+	color: var(--color2); // will be available in nested selector
+}
+
+// # nested properties
+// properties which names have hyphens, can be nested
+.Properties {
+	font: {
+		family: Arial; // font-family
+		size: 1em; // font-size
+	}
+	/* same as
+	font-family: Arial;
+	font-size: 1em
+	 */
+
+	// this also works with shorthands
+	margin: auto {
+		// margin-left and margin-right will be 'auto'
+		bottom: 2em; // margin-bottom
+		top: 1em; // marhin-top
+	}
+}
+
+// # nested selectors
+// we can nest selectors inside each other
+section {
+	h1 {
+		// section h1
+		font-family: $font--primary;
+		font-size: 1.5em;
+	}
+
+	p {
+		// section p
+		font-size: 1.2em;
+	}
+}
+/* This feature is now implemented in CSS, but support is not great as of 12.07.2023  https://caniuse.com/css-nesting */
+
+// # Parent selector and BEM
+
+/*
+Interface element, whose parts are structurally and logically interconnected and have no meaning on their own,
+can be considered as block. If can move block in another place, as a whole.
+For such blocks it makes sense to use a special class naming system
+
+block__element--modifier (BEM)
+child structural element includes the name of parent element and is separated with double underscore __
+*/
+
+.popup {
+	border: thin solid black;
+	padding: 1em;
+	display: grid;
+	justify-items: center;
+	gap: 1em;
+
+	// using parent selector & allows us to avoid repeating the parent class name each time
+	&__title {
+		font-size: 1.5em;
+	}
+
+	&__description {
+		font-size: 1.2em;
+	}
+
+	/* nesting level in BEM shouldn't affect class naming, parent block selector stays the same
+	so you shoudn't try to recreate the nesting hierarchy with __ separators
+	instead of e.g. .popup__description__img,  use  .popup__img */
+	&__img {
+		width: 3em;
+
+		// parent selector is often used with pseudoclasses and pseudoelements
+		&:hover {
+			transform: scale(1.1);
+		}
+	}
+
+	&__button {
+		font-size: 1.2em;
+		border: thin solid black;
+		background: gold;
+		border-radius: 20px;
+
+		&::before {
+			content: '\1F518';
+			margin-right: 1em;
+		}
+	}
+}
+
+// modifiers (use -- separator) mean a variety or subtype of a block
+// e.g ...--enabled, ...--disabled, -...-active, ...--inactive, ...--error , ...--warning etc.
+// usually they are attached to the root block, but can be on it's subelements
+
+.message {
+	border: medium solid gray;
+	padding: 1em;
+
+	&--success {
+		border-color: green;
+	}
+
+	&--error {
+		border-color: red;
+	}
+
+	&__title {
+		font-size: 1.5em;
+	}
+}
+
+// # arrays
+
+.icon {
+	background: green;
+
+	// lists - are analogue of JS arrays
+	// are itterable with @each...in
+	// interpolation: variable can be included in selectors name, using #{}
+	$sizes: 40px, 50px, 80px;
+
+	// = iteration
+	@each $size in $sizes {
+		// = here we use interpolation syntax #{} to contruct the class name
+		&--#{$size} {
+			font-size: $size;
+			height: $size;
+			width: $size;
+		}
+	}
+}
+
+// # for
+@for $i from 2 through 4 {
+	ul.ForExample li:nth-child(#{$i}) {
+		background-color: green;
+	}
+}
+
+// # mixins
+
+@mixin reset-list($var: 0) {
+	margin: $var;
+	padding: $var;
+	list-style: none;
+}
+
+.Mixins {
+	ul {
+		@include reset-list(16px);
+	}
+
+	ol {
+		@include reset-list(16px);
+	}
+}
+
+// ~ block-mixins
+// sometimes we need to pass a whole block of styles into mixin
+// we pass the block in curly brackets after @include
+// this block will be injected in place of @content
+
+@mixin hover {
+	&:not([disabled]):hover {
+		@content;
+	}
+}
+
+.button {
+	border: 1px solid black;
+
+	@include hover {
+		border-width: 2px;
+	}
+}
+
+/*
+rendered to:
+
+.button {
+  border: 1px solid black;
+}
+.button:not([disabled]):hover {
+  border-width: 2px;
+}
+*/
+
+// usually it makes sense to keep mixins in a separate file _mixins
+
+// # conditionals
+
+@mixin colorize($color, $background: false) {
+	@if $background {
+		background-color: $color;
+	} @else {
+		color: $color;
+	}
+}
+
+.Conditionals p {
+	@include colorize(blue);
+}
+
+// # functions
+// functions allow you to do some math, but do not output styles
+@function sum($a, $b) {
+	@return $a + $b;
+}
+
+.Functions {
+	height: sum(10px, 40px);
+	border: thin solid black;
+}
+
+
+// # extends
+
+// ~ placeholder
+%msg {
+	border: medium solid gray;
+	padding: 1em;
+	font-family: $font-stack;
+}
+
+// ~ extending classes
+.msg--success {
+	@extend %msg;
+	border-color: green;
+}
+
+.msg--error {
+	@extend %msg;
+	border-color: red;
+}
+
+// # styles files structure
+
+// In order to prevent 'dependent' files ("partials") from outputting as separate files
+// we don't want this cause they are already included in root file) we need to indicate this by starting their names with underscore
+
+// DEBUG
+@debug meta.global-variable-exists('font--primary');
+@debug 'Hello';
+// @warn 'something wrong!'
+// @error 'error happened!'; // provides call stack

@@ -1,0 +1,80 @@
+// # SCSS allows us to use variables for breakpoints
+
+// ~ Global breakpoints approach
+
+// this breakpoint can be placed in separate _breakpoints.scss file
+$breakpoint--mobile: 480px; // iPhone
+$breakpoint--tablet: 800px; //iPad
+$breakpoint--desktop: 1368px; // Mac
+
+/* we have a set of media blocks based on global breakpoints, and all code goes inside
+the only approach possible with pure CSS */
+@media screen and (max-width: $breakpoint--mobile + 1px) {
+	.adaptive {
+		background: green;
+	}
+
+	.adaptive2 {
+		color: red;
+	}
+}
+
+@media screen and (min-width: $breakpoint--mobile + 1px) and (max-width: $breakpoint--tablet) {
+	.adaptive {
+		background: blue;
+	}
+
+	.adaptive2 {
+		color: blue;
+	}
+}
+
+@media screen and (min-width: $breakpoint--tablet) {
+	.adaptive {
+		background: red;
+	}
+
+	.adaptive2 {
+		color: red;
+	}
+}
+
+// ~ local breakpoints approach
+/*
+breakpoints are individiual for each block and can be adjusted to optimize this block behavior for every possible screen width
+we don't have to obey the global breakpoints aif they don't suit our needs
+
+we can use nested media declarations
+*/
+
+.responsive {
+	$local-bp--mobile: 600px;
+	$local-bp--tablet: 1200px;
+	background: red;
+
+	@media screen and (max-width: $local-bp--mobile) {
+		background: green;
+	}
+
+	@media screen and (min-width: $local-bp--mobile + 1px) and (max-width: $local-bp--tablet) {
+		background: blue;
+	}
+
+	@media screen and (min-width: $local-bp--tablet + 1px) {
+		background: red;
+	}
+}
+
+.responsive2 {
+	$bp--modile: 500px;
+	$bp--tablet: 1000px;
+	background: red;
+
+	@media screen and (max-width: $bp--modile) {
+		background: green;
+	}
+
+	@media screen and (min-width: $breakpoint--mobile) and (max-width: $breakpoint--tablet) {
+		background: red;
+	}
+}
