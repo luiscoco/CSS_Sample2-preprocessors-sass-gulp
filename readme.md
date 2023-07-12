@@ -1,5 +1,7 @@
 # How to run the application
 
+0. Open the application folder in VSCode.
+
 1. We install gulp for packages management
 ```
 npm install -g gulp
